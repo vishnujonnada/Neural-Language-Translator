@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speech To Speech</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='speech_to_speech.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="/">Neural Language Translator</a>
+            </div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/text_to_text">Text to Text</a></li>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+    <button id="startRecording">Start Recording</button>
+    <div id="result"></div>
+    <form id="translationForm">
+        <label for="target_lang">Select target language:</label>
+        <select name="target_lang" id="target_lang">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+            <!-- Add more languages here -->
+        </select>
+        <input type="hidden" name="text" id="text" /> <!-- Hidden field for recognized text -->
+        <button type="submit" id="translate-button">Translate</button>
+    </form>
+    <div id="translationResult"></div>
+    <audio controls id="translatedSpeech" autoplay style="display: none;">
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    </div>
+    <script>
+        let recognitionActive = false;
+        const recognitionButton = document.getElementById('startRecording');
+        const resultDiv = document.getElementById('result');
+        const translationForm = document.getElementById('translationForm');
+        const textInput = document.getElementById('text'); // Hidden field for recognized text
+
+        const recognition = new webkitSpeechRecognition(); // Create a new recognition instance
+
+        recognition.onresult = function(event) {
+            const result = event.results[0][0].transcript;
+            textInput.value = result; // Set the recognized text in the hidden field
+            resultDiv.textContent = `Recognized Text: ${result}`;
+        };
+
+        recognitionButton.addEventListener('click', () => {
+            if (!recognitionActive) {
+                recognitionButton.textContent = 'Stop Recording';
+                resultDiv.textContent = 'Listening...';
+
+                recognitionActive = true;
+                recognition.start();
+            } else {
+                recognition.stop();
+                recognitionButton.textContent = 'Start Recording';
+                recognitionActive = false;
+            }
+        });
+
+        translationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/translate', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                translationResult.textContent = `Translation Error: ${data.error}`;
+            } else {
+                translationResult.textContent = `Translated Text: ${data.translated_text}`;
+                
+                const audioData = data.audio_data;
+                const audioBlob = b64toBlob(audioData, 'audio/mpeg');
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                const translatedSpeech = document.getElementById('translatedSpeech');
+                translatedSpeech.src = audioUrl;
+                translatedSpeech.style.display = 'block';
+
+                const playTranslatedSpeechButton = document.getElementById('playTranslatedSpeech');
+                playTranslatedSpeechButton.style.display = 'block';
+            }
+        });
+
+        const playTranslatedSpeechButton = document.getElementById('playTranslatedSpeech');
+        playTranslatedSpeechButton.addEventListener('click', () => {
+            const translatedSpeech = document.getElementById('translatedSpeech');
+            translatedSpeech.play();
+        });
+
+        // Function to convert Base64 to Blob
+        function b64toBlob(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            const byteCharacters = atob(b64Data);
+            const byteArrays = [];
+
+            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+
+            return new Blob(byteArrays, { type: contentType });
+        }
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+});
+
+    </script>
+      <script>
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('active');
+    });
+    
+       </script>
+</body>
+</html>

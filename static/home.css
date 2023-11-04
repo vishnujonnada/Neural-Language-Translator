@@ -1,0 +1,129 @@
+/* Reset some default styles and set a background color */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+/* Style the header and navigation */
+header {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.logo a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-right: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    width: 30px;
+    height: 4px;
+    background-color: #fff;
+    margin: 4px 0;
+}
+
+/* Style the container */
+.container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 130px;
+    margin-bottom: 70px; /* Add margin to separate the container from the navigation */
+    position: relative;
+}
+
+/* Style the content (text) */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Style the image */
+.image-container {
+    flex: 1;
+    text-align: center; /* Center the image horizontally */
+    margin-top: 20px; /* Add margin to separate the image from the text */
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .image-container {
+        margin-top: 10px;
+    }
+}
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background-color: #333;
+        width: 100%;
+        text-align: center;
+        transition: all 0.3s;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+}

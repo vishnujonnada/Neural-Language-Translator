@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+    <title>Neural Language Translator</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="/">Neural Language Translator</a>
+            </div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/speech_to_speech">Speech to Speech</a></li>
+                <li><a href="/text_to_text">Text to Text</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <h1>Translation Made Easy</h1>
+            <p>Welcome to Neural LanguageTranslator, the ultimate tool for bridging
+                communication gaps. With two powerful options - text to text
+                translation and speech to speech translation - our web app is here to
+                revolutionize language understanding. Discover the power of language with our innovative translation options. Choose between text to text and speech to speech translation, and unlock a world of communication possibilities.</p>
+        </div>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Image Description">
+        </div>
+    </div>
+
+
+   <script>
+    document.querySelector('.menu-toggle').addEventListener('click', function() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+});
+
+   </script>
+</body>
+</html>
