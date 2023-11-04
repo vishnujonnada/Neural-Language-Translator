@@ -10,7 +10,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: auto;
     background-color: #f0f0f0;
     font-family: 'Your Font Name', sans-serif; /* Replace 'Your Font Name' with the desired font family */
 }
