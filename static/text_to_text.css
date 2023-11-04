@@ -118,6 +118,7 @@ select {
 /* Style the translated text display */
 .translated-text {
     text-align: center;
+    margin: 10px;
 }
 
 /* Media query for mobile devices */
